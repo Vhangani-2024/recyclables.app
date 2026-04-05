@@ -1,0 +1,80 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #7a84de;
+}
+
+#businessForm {
+  width: 60%;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #4531b9;
+  border: 1px solid #02090f;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+#businessForm input {
+  width: 90%;
+  height: 30px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#businessForm select {
+  width: 100%;
+  height: 40px;
+  margin-bottom: 10px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+
+}
+
+#businessForm button[type="submit"] {
+  width: 100%;
+  height: 40px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#businessForm button[type="submit"]:hover {
+  background-color: #3e8e41;
+}
+
+#dataTable {
+  width: 80%;
+  margin: 20px auto;
+  border-collapse: collapse;
+}
+
+#dataTable th, #dataTable td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+#dataTable th {
+  background-color: #f0f0f0;
+}
+
+#clearBtn {
+  width: 20%;
+  height: 40px;
+  margin: 20px auto;
+  background-color: #f44336;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  display: block;
+}
+
+#clearBtn:hover {
+  background-color: #e91e63;
+}
+

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recyclables and Renewable</title>
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Firebase scripts -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+<h2>Business Form</h2>
+<form id="businessForm">
+  Name: 
+  <select id="name">
+    <option value="bongani">Bongani</option>
+    <option value="phuluso">Phuluso</option>
+    <option value="muchinyani">Muchinyani</option>
+    <option value="dineo">Dineo</option>
+    <option value="mmawe">Mmawe</option>
+    <option value="wamashudu">Wamashudu</option> 
+  </select><br>
+
+  Time: <input type="time" id="time"><br>
+  Date: <input type="date" id="date"><br>
+  Item: 
+  <select id="item">
+    <option value="Bottle">Bottle</option>
+    <option value="Cash">Cash</option>
+  </select><br>
+  Bottles: <input type="number" id="bottles"><br>
+  Amount (R): <input type="number" id="amount"><br>
+  Stock 1: 
+  <select id="stock1">
+    <option value="snack">Snack</option>
+    <option value="cigerattes">Cigerattes</option>
+    <option value="sweets">Sweets</option>
+    <option value="biscuits">Biscuits</option>
+    <option value="g-vita">G-vita</option>
+    <option value="-">-</option> 
+  </select><br>
+  Stock 2: 
+  <select id="stock2">
+    <option value="snack">Snack</option>
+    <option value="cigerattes">Cigerattes</option>
+    <option value="sweets">Sweets</option>
+    <option value="biscuits">Biscuits</option>
+    <option value="g-vita">G-vita</option>
+    <option value="-">-</option> 
+  </select><br>
+  Stock 3: 
+  <select id="stock3">
+    <option value="snack">Snack</option>
+    <option value="cigerattes">Cigerattes</option>
+    <option value="sweets">Sweets</option>
+    <option value="biscuits">Biscuits</option>
+    <option value="g-vita">G-vita</option>
+    <option value="can">Can</option>
+    <option value="-">-</option> 
+  </select><br>
+  Stock 4: 
+  <select id="stock4">
+    <option value="snack">Snack</option>
+    <option value="cigerattes">Cigerattes</option>
+    <option value="sweets">Sweets</option>
+    <option value="biscuits">Biscuits</option>
+    <option value="g-vita">G-vita</option>
+    <option value="-">-</option> 
+  </select><br>
+  Total: <input type="number" id="total"><br>
+  <button type="submit">Submit</button>
+</form>
+
+<h2>Entries Table</h2>
+<table id="dataTable">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Time</th>
+      <th>Date</th>
+      <th>Item</th>
+      <th>Bottles</th>
+      <th>Amount</th>
+      <th>Stock 1</th>
+      <th>Stock 2</th>
+      <th>Stock 3</th>
+      <th>Stock 4</th>
+      <th>Total</th>
+    </tr>
+  </thead>
+  <tbody></tbody>
+</table>
+
+<button id="clearBtn">Clear Data</button>
+
+<script>
+  // 🔹 Replace this with your Firebase config
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_PROJECT.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId: "YOUR_APP_ID"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  const form = document.getElementById('businessForm');
+  const tableBody = document.querySelector('#dataTable tbody');
+
+  // Load existing data from Firestore
+  db.collection("businessData").orderBy("date").get().then(snapshot => {
+    snapshot.forEach(doc => {
+      addRow(doc.data());
+    });
+  });
+
+  // Handle form submission
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const entry = {
+      name: document.getElementById('name').value.trim(),
+      time: document.getElementById('time').value,
+      date: document.getElementById('date').value,
+      item: document.getElementById('item').value,
+      bottles: document.getElementById('bottles').value,
+      amount: document.getElementById('amount').value,
+      stock1: document.getElementById('stock1').value,
+      stock2: document.getElementById('stock2').value,
+      stock3: document.getElementById('stock3').value,
+      stock4: document.getElementById('stock4').value,
+      total: document.getElementById('total').value,
+    };
+
+    if(entry.name && entry.time){
+      db.collection("businessData").add(entry)
+        .then(() => {
+          addRow(entry);
+          form.reset();
+        })
+        .catch(error => {
+          console.error("Error adding entry: ", error);
+        });
+    } else {
+      alert('Fill required fields!');
+    }
+  });
+
+  // Add a row to the table
+  function addRow(entry){
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${entry.name}</td>
+      <td>${entry.time}</td>
+      <td>${entry.date}</td>
+      <td>${entry.item}</td>
+      <td>${entry.bottles}</td>
+      <td>${entry.amount}</td>
+      <td>${entry.stock1}</td>
+      <td>${entry.stock2}</td>
+      <td>${entry.stock3}</td>
+      <td>${entry.stock4}</td>
+      <td>${entry.total}</td>
+    `;
+    tableBody.appendChild(row);
+  }
+
+  // Clear all data
+  document.getElementById('clearBtn').addEventListener('click', () => {
+    if(confirm("Are you sure you want to clear all data?")){
+      db.collection("businessData").get().then(snapshot => {
+        snapshot.forEach(doc => {
+          db.collection("businessData").doc(doc.id).delete();
+        });
+      }).then(() => {
+        tableBody.innerHTML = '';
+        alert('Data cleared!');
+      });
+    }
+  });
+</script>
+
+</body>
+</html>
