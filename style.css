@@ -18,12 +18,14 @@ body {
 }
 
 #businessForm {
+  top: 80px;
+  left: 70px;
   width: 60%;
   margin: 20px auto;
   padding: 20px;
   background-color: #4531b9;
   border: 1px solid #02090f;
-  border-radius: 10px;
+  border-radius: 30px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -33,7 +35,7 @@ body {
   margin-bottom: 10px;
   padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 20px;
 }
 
 #businessForm select {
@@ -42,7 +44,7 @@ body {
   margin-bottom: 10px;
   padding: 10px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 20px;
 
 }
 
